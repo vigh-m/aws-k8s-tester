@@ -54,10 +54,11 @@ var (
 )
 
 type UserDataTemplateData struct {
-	Name                 string
-	CertificateAuthority string
-	CIDR                 string
-	APIServerEndpoint    string
+	Name                               string
+	CertificateAuthority               string
+	CIDR                               string
+	APIServerEndpoint                  string
+	DeviceOwnershipFromSecurityContext string
 }
 
 var (
