@@ -10,6 +10,7 @@ import (
 
 func generateUserData(format string, cluster *Cluster) (string, bool, error) {
 	userDataIsMimePart := true
+	deviceOwnershipFromSecurityContext := "false"
 	var t *template.Template
 	switch format {
 	case "bootstrap.sh":
@@ -20,15 +21,17 @@ func generateUserData(format string, cluster *Cluster) (string, bool, error) {
 	case "bottlerocket":
 		t = templates.UserDataBottlerocket
 		userDataIsMimePart = false
+		deviceOwnershipFromSecurityContext = "true"
 	default:
 		return "", false, fmt.Errorf("uknown user data format: '%s'", format)
 	}
 	buf := bytes.Buffer{}
 	if err := t.Execute(&buf, templates.UserDataTemplateData{
-		APIServerEndpoint:    cluster.endpoint,
-		CertificateAuthority: cluster.certificateAuthorityData,
-		CIDR:                 cluster.cidr,
-		Name:                 cluster.name,
+		APIServerEndpoint:                  cluster.endpoint,
+		CertificateAuthority:               cluster.certificateAuthorityData,
+		CIDR:                               cluster.cidr,
+		Name:                               cluster.name,
+		DeviceOwnershipFromSecurityContext: deviceOwnershipFromSecurityContext,
 	}); err != nil {
 		return "", false, err
 	}
