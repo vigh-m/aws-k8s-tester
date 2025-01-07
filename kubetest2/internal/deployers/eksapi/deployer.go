@@ -78,6 +78,7 @@ type deployerOptions struct {
 	Nodes               int           `flag:"nodes" desc:"number of nodes to launch in cluster"`
 	NodeNameStrategy    string        `flag:"node-name-strategy" desc:"Specifies the naming strategy for node. Allowed values: ['SessionName', 'EC2PrivateDNSName'], default to EC2PrivateDNSName"`
 	Region              string        `flag:"region" desc:"AWS region for EKS cluster"`
+	Zones               []string      `flag:"zones" desc:"restrict AZ for EC2 instances"`
 	StaticClusterName   string        `flag:"static-cluster-name" desc:"Optional when re-use existing cluster and node group by querying the kubeconfig and run test"`
 	TuneVPCCNI          bool          `flag:"tune-vpc-cni" desc:"Apply tuning parameters to the VPC CNI DaemonSet"`
 	UnmanagedNodes      bool          `flag:"unmanaged-nodes" desc:"Use an AutoScalingGroup instead of an EKS-managed nodegroup. Requires --ami"`

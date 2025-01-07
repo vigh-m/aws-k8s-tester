@@ -87,7 +87,16 @@ func (i *Infrastructure) subnets() []string {
 
 func (m *InfrastructureManager) createInfrastructureStack(opts *deployerOptions) (*Infrastructure, error) {
 	// get two AZs for the subnets
-	azs, err := m.clients.EC2().DescribeAvailabilityZones(context.TODO(), &ec2.DescribeAvailabilityZonesInput{})
+	var azs *ec2.DescribeAvailabilityZonesOutput
+	var err error
+	if len(opts.Zones) != 0 {
+		azs, err = m.clients.EC2().DescribeAvailabilityZones(context.TODO(), &ec2.DescribeAvailabilityZonesInput{
+			ZoneNames: opts.Zones,
+		})
+	} else {
+		azs, err = m.clients.EC2().DescribeAvailabilityZones(context.TODO(), &ec2.DescribeAvailabilityZonesInput{})
+	}
+
 	if err != nil {
 		return nil, err
 	}
